@@ -58,6 +58,37 @@ class PullupPage extends Component {
     });
   }
 
+  textOnPress = (value) => {
+    let updated_array = this.state.setsComplete;
+    if (updated_array[value] === 'black') {
+      updated_array[value] = 'green';
+    } else {
+      updated_array[value] = 'black';
+    }
+    this.setState(updated_array);
+  };
+
+  textStyle = (value) => {
+    return {
+      left: '47%',
+      top: '25%',
+      fontSize: 56,
+      color: this.state.setsComplete[value],
+      fontFamily: 'Roboto',
+      fontStyle: 'normal',
+    };
+  };
+
+  onDoneButtonPress = () => {
+    this.setState({
+      dayDifference: this.state.dayDifference + 1,
+      setsComplete: ['black', 'black', 'black', 'black', 'black'],
+    });
+    console.log(this.state.dayDifference);
+    storeObject(this.state.dayDifference + 1);
+    this.updateSets();
+  };
+
   render() {
     const styles = {
       buttonsView: {
@@ -110,29 +141,6 @@ class PullupPage extends Component {
       },
     };
 
-    const textOnPress = (value) => {
-      let updated_array = this.state.setsComplete;
-      if (updated_array[value] === 'black') {
-        updated_array[value] = 'green';
-      } else {
-        updated_array[value] = 'black';
-      }
-      this.setState(updated_array);
-    };
-
-    const onDonePress = () => {};
-
-    const textStyle = (value) => {
-      return {
-        left: '47%',
-        top: '25%',
-        fontSize: 56,
-        color: this.state.setsComplete[value],
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-      };
-    };
-
     return (
       <>
         <StatusBar barStyle="dark-content" />
@@ -143,39 +151,33 @@ class PullupPage extends Component {
                 Day {this.state.dayDifference}
               </Text>
             </View>
+
             <View style={styles.container}>
-              <Pressable onPress={() => textOnPress(0)}>
-                <Text style={textStyle(0)}>{this.state.sets[0]}</Text>
+              <Pressable onPress={() => this.textOnPress(0)}>
+                <Text style={this.textStyle(0)}>{this.state.sets[0]}</Text>
               </Pressable>
-              <Pressable onPress={() => textOnPress(1)}>
-                <Text style={textStyle(1)}>{this.state.sets[1]}</Text>
+              <Pressable onPress={() => this.textOnPress(1)}>
+                <Text style={this.textStyle(1)}>{this.state.sets[1]}</Text>
               </Pressable>
-              <Pressable onPress={() => textOnPress(2)}>
-                <Text style={textStyle(2)}>{this.state.sets[2]}</Text>
+              <Pressable onPress={() => this.textOnPress(2)}>
+                <Text style={this.textStyle(2)}>{this.state.sets[2]}</Text>
               </Pressable>
-              <Pressable onPress={() => textOnPress(3)}>
-                <Text style={textStyle(3)}>{this.state.sets[3]}</Text>
+              <Pressable onPress={() => this.textOnPress(3)}>
+                <Text style={this.textStyle(3)}>{this.state.sets[3]}</Text>
               </Pressable>
-              <Pressable onPress={() => textOnPress(4)}>
-                <Text style={textStyle(4)}>{this.state.sets[4]}</Text>
+              <Pressable onPress={() => this.textOnPress(4)}>
+                <Text style={this.textStyle(4)}>{this.state.sets[4]}</Text>
               </Pressable>
             </View>
+
             <View style={styles.doneButton}>
-              <Pressable
-                onPress={() => {
-                  this.setState({
-                    dayDifference: this.state.dayDifference + 1,
-                    setsComplete: ['black', 'black', 'black', 'black', 'black'],
-                  });
-                  console.log(this.state.dayDifference);
-                  storeObject(this.state.dayDifference + 1);
-                  this.updateSets();
-                }}>
+              <Pressable onPress={() => this.onDoneButtonPress()}>
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Done</Text>
                 </View>
               </Pressable>
             </View>
+
             <View style={styles.buttonsView}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Program</Text>
