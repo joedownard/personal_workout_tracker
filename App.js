@@ -34,11 +34,13 @@ class PullupPage extends Component {
     this.updateSets();
   }
 
-  updateSets() {
-    getObject().then((r) => {
+  updateSets = () => {
+    getObject('@day_count').then((r) => {
       let dayDifference = 0;
       if (r == null) {
-        storeObject(0).then(() => console.log('Started tracking date.'));
+        storeObject('@day_count', 0).then(() =>
+          console.log('Started tracking date.'),
+        );
       } else {
         dayDifference = r;
       }
@@ -56,7 +58,7 @@ class PullupPage extends Component {
         ],
       });
     });
-  }
+  };
 
   textOnPress = (value) => {
     let updated_array = this.state.setsComplete;
@@ -70,11 +72,10 @@ class PullupPage extends Component {
 
   textStyle = (value) => {
     return {
-      left: '47%',
+      textAlign: 'center',
       top: '25%',
-      fontSize: 56,
+      fontSize: 72,
       color: this.state.setsComplete[value],
-      fontFamily: 'Roboto',
       fontStyle: 'normal',
     };
   };
@@ -84,8 +85,16 @@ class PullupPage extends Component {
       dayDifference: this.state.dayDifference + 1,
       setsComplete: ['black', 'black', 'black', 'black', 'black'],
     });
-    console.log(this.state.dayDifference);
-    storeObject(this.state.dayDifference + 1);
+    storeObject('@day_count', this.state.dayDifference + 1);
+    this.updateSets();
+  };
+
+  onResetButtonPress = () => {
+    this.setState({
+      dayDifference: 0,
+      setsComplete: ['black', 'black', 'black', 'black', 'black'],
+    });
+    storeObject('@day_count', 0);
     this.updateSets();
   };
 
@@ -110,13 +119,13 @@ class PullupPage extends Component {
       },
       doneButton: {
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
         paddingTop: '10%',
         paddingLeft: '38%',
         paddingRight: '10%',
       },
       buttonText: {
-        fontFamily: 'Roboto',
         fontStyle: 'normal',
         fontWeight: '900',
         fontSize: 20,
@@ -132,11 +141,11 @@ class PullupPage extends Component {
         position: 'relative',
       },
       titleText: {
-        left: '34%',
+        textAlign: 'center',
         top: '25%',
         fontSize: 56,
         paddingBottom: 25,
-        fontFamily: 'Roboto',
+        fontWeight: 'bold',
         fontStyle: 'normal',
       },
     };
@@ -171,6 +180,14 @@ class PullupPage extends Component {
             </View>
 
             <View style={styles.doneButton}>
+              <Pressable onPress={() => this.onResetButtonPress()}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Reset</Text>
+                </View>
+              </Pressable>
+            </View>
+
+            <View style={styles.doneButton}>
               <Pressable onPress={() => this.onDoneButtonPress()}>
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Done</Text>
@@ -193,18 +210,18 @@ class PullupPage extends Component {
   }
 }
 
-const storeObject = async (value) => {
+const storeObject = async (key, value) => {
   try {
     const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem('@days_completed', jsonValue);
+    await AsyncStorage.setItem(key, jsonValue);
   } catch (e) {
     console.log(e);
   }
 };
 
-const getObject = async () => {
+const getObject = async (key) => {
   try {
-    const jsonValue = await AsyncStorage.getItem('@days_completed');
+    const jsonValue = await AsyncStorage.getItem(key);
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
     console.log(e);
