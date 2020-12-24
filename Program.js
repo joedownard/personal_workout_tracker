@@ -3,14 +3,6 @@ import {Pressable, ScrollView, StatusBar, Text, View} from 'react-native';
 import styles from './Styles';
 import {storeObject, getObject} from './DataStorage';
 
-function constructExerciseItem() {
-  return (
-    <View style={styles.exerciseItem}>
-      <Text>test</Text>
-    </View>
-  );
-}
-
 export default function Program(props) {
   const [constructorRun, setConstructorRun] = useState(false);
   const [day, setDay] = useState(0);
@@ -234,6 +226,17 @@ export default function Program(props) {
     storeObject('@exercises', exercises);
   }
 
+  function daySelectorStyle(value) {
+    let weight = 600;
+    if (value === day) weight = 800;
+    return {
+      fontSize: 50,
+      color: 'black',
+      fontWeight: weight.toString(),
+      fontStyle: 'normal',
+    };
+  }
+
   function ConstructExerciseItem(props) {
     const exercise = props.exercise;
     return (
@@ -279,32 +282,32 @@ export default function Program(props) {
               <Pressable
                 style={styles.daySelectorPressable}
                 onPress={() => setDay(0)}>
-                <Text style={styles.daySelectorText}>1</Text>
+                <Text style={daySelectorStyle(0)}>1</Text>
               </Pressable>
               <Pressable
                 style={styles.daySelectorPressable}
                 onPress={() => setDay(1)}>
-                <Text style={styles.daySelectorText}>2</Text>
+                <Text style={daySelectorStyle(1)}>2</Text>
               </Pressable>
               <Pressable
                 style={styles.daySelectorPressable}
                 onPress={() => setDay(2)}>
-                <Text style={styles.daySelectorText}>3</Text>
+                <Text style={daySelectorStyle(2)}>3</Text>
               </Pressable>
               <Pressable
                 style={styles.daySelectorPressable}
                 onPress={() => setDay(3)}>
-                <Text style={styles.daySelectorText}>4</Text>
+                <Text style={daySelectorStyle(3)}>4</Text>
               </Pressable>
               <Pressable
                 style={styles.daySelectorPressable}
                 onPress={() => setDay(4)}>
-                <Text style={styles.daySelectorText}>5</Text>
+                <Text style={daySelectorStyle(4)}>5</Text>
               </Pressable>
               <Pressable
                 style={styles.daySelectorPressable}
                 onPress={() => setDay(5)}>
-                <Text style={styles.daySelectorText}>6</Text>
+                <Text style={daySelectorStyle(5)}>6</Text>
               </Pressable>
             </View>
           </View>
